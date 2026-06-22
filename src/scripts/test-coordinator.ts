@@ -1,8 +1,8 @@
-import { parseDocument } from "./ingestion/parseDocument";
-import { chunkText } from "./ingestion/chunkText";
-import { generateEmbeddings } from "./ingestion/generateEmbedding";
-import { createVectorStore, addToStore } from "./ingestion/vectorStore";
-import { runCoordinator } from "./agents/coordinatorAgent";
+import { parseDocument } from "../ingestion/parseDocument";
+import { chunkText } from "../ingestion/chunkText";
+import { generateEmbeddings } from "../ingestion/generateEmbedding";
+import { createVectorStore, addToStore } from "../ingestion/vectorStore";
+import { runCoordinator } from "../agents/coordinatorAgent";
 
 async function main() {
   const text = await parseDocument("./sample.pdf");

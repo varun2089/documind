@@ -15,28 +15,41 @@ Documind is a multi-agent document intelligence assistant built with the Claude 
 
 ### Agents (`src/agents/`)
 
-- `coordinatorAgent.ts` — The main orchestrator. Sends the user query to Claude with tool definitions, executes all `tool_use` blocks in the response, and loops (up to 5 rounds) until the model produces a final text answer.
+- `coordinatorAgent.ts` — The main orchestrator. Routes between `search_documents` and `extract_data` based on user intent. Sends the user query to Claude with tool definitions, executes all `tool_use` blocks in the response, and loops (up to 5 rounds) until the model produces a final text answer. Enforces JSON-only output (no markdown, no commentary) when the user explicitly requests structured/JSON output.
 
 ### Tools (`src/tools/`)
 
 - `searchDocumentsTool.ts` — Embeds the query and runs cosine similarity search against the vector store. Returns top-k matching chunks.
 - `extractDataTool.ts` — Uses Claude to extract structured JSON from text according to a caller-provided JSON schema.
 
-### Other
+### Server (`src/server.ts`)
 
-- `generateAnswer.ts` — Standalone RAG answer generator (context + question → Claude response). Used before the coordinator agent was introduced.
+An Express server (with CORS enabled) exposing two endpoints:
+
+- `POST /ingest` — Accepts `{ filePath: string }`. Parses the document at that path, chunks it, generates embeddings, and adds all chunks to a shared in-memory vector store. Returns `{ success: true, chunksAdded: number }`.
+- `POST /chat` — Accepts `{ question: string }`. Runs the coordinator agent against the current vector store and returns `{ answer: string }`.
+
+The vector store is in-memory only and does not persist across server restarts.
 
 ## Development Commands
 
 ```bash
-# Run any test/script file
-npx tsx src/<file>.ts
-
-# Example: run the coordinator agent test
-npx tsx src/test-coordinator.ts
-
-# Start the server (once implemented)
+# Start the server
 npx tsx src/server.ts
+
+# Run test scripts (located in src/scripts/)
+npx tsx src/scripts/test-coordinator.ts
+npx tsx src/scripts/test-extract.ts
+
+# Example: ingest a document
+curl -X POST http://localhost:3001/ingest \
+  -H "Content-Type: application/json" \
+  -d '{"filePath": "./sample.pdf"}'
+
+# Example: ask a question
+curl -X POST http://localhost:3001/chat \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What are the payment terms?"}'
 ```
 
 ## Code Standards

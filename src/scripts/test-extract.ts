@@ -1,5 +1,5 @@
-import { parseDocument } from "./ingestion/parseDocument";
-import { executeExtractData } from "./tools/extractDataTool";
+import { parseDocument } from "../ingestion/parseDocument";
+import { executeExtractData } from "../tools/extractDataTool";
 
 async function main() {
   const text = await parseDocument("./sample.pdf");
