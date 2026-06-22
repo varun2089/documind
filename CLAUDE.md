@@ -6,23 +6,23 @@ Documind is a multi-agent document intelligence assistant built with the Claude 
 
 ## Architecture
 
-### Ingestion Pipeline (`src/ingestion/`)
+### Ingestion Pipeline (`api/ingestion/`)
 
 - `parseDocument.ts` — Extracts raw text from `.pdf` (via pdf-parse) and `.docx` (via mammoth) files.
 - `chunkText.ts` — Splits text into overlapping chunks (default 1000 chars, 200 overlap).
 - `generateEmbedding.ts` — Produces embeddings via Voyage AI (`voyage-4-lite`).
 - `vectorStore.ts` — In-memory vector store with cosine similarity search. Exports `VectorEntry` and `SearchResult` type aliases.
 
-### Agents (`src/agents/`)
+### Agents (`api/agents/`)
 
 - `coordinatorAgent.ts` — The main orchestrator. Routes between `search_documents` and `extract_data` based on user intent. Sends the user query to Claude with tool definitions, executes all `tool_use` blocks in the response, and loops (up to 5 rounds) until the model produces a final text answer. Enforces JSON-only output (no markdown, no commentary) when the user explicitly requests structured/JSON output.
 
-### Tools (`src/tools/`)
+### Tools (`api/tools/`)
 
 - `searchDocumentsTool.ts` — Embeds the query and runs cosine similarity search against the vector store. Returns top-k matching chunks.
 - `extractDataTool.ts` — Uses Claude to extract structured JSON from text according to a caller-provided JSON schema.
 
-### Server (`src/server.ts`)
+### Server (`api/server.ts`)
 
 An Express server (with CORS enabled) exposing two endpoints:
 
@@ -35,11 +35,11 @@ The vector store is in-memory only and does not persist across server restarts.
 
 ```bash
 # Start the server
-npx tsx src/server.ts
+npx tsx api/server.ts
 
-# Run test scripts (located in src/scripts/)
-npx tsx src/scripts/test-coordinator.ts
-npx tsx src/scripts/test-extract.ts
+# Run test scripts (located in api/scripts/)
+npx tsx api/scripts/test-coordinator.ts
+npx tsx api/scripts/test-extract.ts
 
 # Example: ingest a document
 curl -X POST http://localhost:3001/ingest \
