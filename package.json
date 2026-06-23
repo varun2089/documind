@@ -1,36 +1,12 @@
 {
   "name": "documind",
   "version": "1.0.0",
+  "private": true,
   "description": "AI-powered multi-agent document intelligence assistant using Claude API, RAG, and agentic orchestration",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "workspaces": ["api", "frontend"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/varun2089/documind.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/varun2089/documind/issues"
-  },
-  "homepage": "https://github.com/varun2089/documind#readme",
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.105.0",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "mammoth": "^1.12.0",
-    "pdf-parse": "^2.4.5",
-    "voyageai": "^0.4.0"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
-    "@types/node": "^25.9.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^6.0.3"
-  }
+  "license": "ISC"
 }

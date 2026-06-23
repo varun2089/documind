@@ -4,6 +4,15 @@
 
 Documind is a multi-agent document intelligence assistant built with the Claude API, RAG (Retrieval-Augmented Generation), and agentic tool use. It ingests PDF and DOCX files, chunks and embeds their content using Voyage AI, stores vectors in an in-memory store, and answers questions via a coordinator agent that selects and executes tools in an agentic loop.
 
+## Project Structure
+
+This is an npm workspaces monorepo with two packages:
+
+- `api/` — Express backend (RAG pipeline, agents, tools)
+- `frontend/` — React + Vite + Tailwind chat UI
+
+Each workspace has its own `package.json` and `tsconfig.json`. Dependencies are installed from the root via `npm install`, which hoists shared packages.
+
 ## Architecture
 
 ### Ingestion Pipeline (`api/ingestion/`)
@@ -31,13 +40,29 @@ An Express server (with CORS enabled) exposing two endpoints:
 
 The vector store is in-memory only and does not persist across server restarts.
 
+### Frontend (`frontend/`)
+
+React + TypeScript + Tailwind v4 chat interface built with Vite. Components use arrow function syntax and `lucide-react` for icons.
+
+- `App.tsx` — Main layout (header, sidebar, chat area)
+- `components/Sidebar.tsx` — Document list with "Add document" button
+- `components/ChatArea.tsx` — Scrollable message thread
+- `components/ChatMessage.tsx` — Individual message card with source citation tags
+- `components/ChatInput.tsx` — Text input with send button
+
 ## Development Commands
 
 ```bash
-# Start the server
-npx tsx api/server.ts
+# Install all dependencies (from root)
+npm install
 
-# Run test scripts (located in api/scripts/)
+# Start the API server
+npm run dev --workspace=api
+
+# Start the frontend dev server
+npm run dev --workspace=frontend
+
+# Run test scripts
 npx tsx api/scripts/test-coordinator.ts
 npx tsx api/scripts/test-extract.ts
 
@@ -58,3 +83,5 @@ curl -X POST http://localhost:3001/chat \
 - Always handle all `tool_use` blocks in a response, not just the first one.
 - Never commit `.env` — it is in `.gitignore`.
 - This project does not use classes or interfaces. Prefer plain functions and type aliases.
+- Frontend components use arrow function syntax with separate `export default` statements.
+- Frontend uses `lucide-react` for icons — do not write inline SVGs.

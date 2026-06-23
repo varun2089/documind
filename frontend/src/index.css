@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-sidebar: #0F172A;
+  --color-sidebar-hover: #1E293B;
+  --color-sidebar-text: #CBD5E1;
+  --color-surface: #F8FAFC;
+  --color-accent: #4F46E5;
+  --color-accent-hover: #4338CA;
+  --color-user-bg: #EEF2FF;
+  --color-source-bg: #FEF3C7;
+  --color-source-text: #92400E;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-surface);
+}
