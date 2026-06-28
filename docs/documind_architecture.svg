@@ -1,0 +1,83 @@
+<svg width="1400" height="880" viewBox="0 0 1400 880" xmlns="http://www.w3.org/2000/svg">
+<title>Documind architecture diagram</title>
+<desc>Upload path on the left, question path on the right. The coordinator agent calls Claude, which routes to two tools: search_documents, and extract_data which is itself a subagent making its own independent call back to Claude. The final answer with sources flows to the chat UI.</desc>
+<rect x="0" y="0" width="1400" height="880" fill="#FAF3E8"/>
+
+<defs>
+  <marker id="hd-arrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+    <path d="M0,0 L7,3.5 L0,7" fill="none" stroke="#000000" stroke-width="2"/>
+  </marker>
+</defs>
+
+<!-- Upload path -->
+<rect x="80" y="60" width="240" height="74" rx="16" fill="#8FB3DA" stroke="#1A2A3A" stroke-width="3"/>
+<text x="200" y="90" text-anchor="middle" font-size="20" font-weight="700" fill="#1A2A3A" font-family="sans-serif">Upload PDF /</text>
+<text x="200" y="118" text-anchor="middle" font-size="20" font-weight="700" fill="#1A2A3A" font-family="sans-serif">DOCX</text>
+
+<line x1="200" y1="134" x2="200" y2="206" stroke="#000000" stroke-width="2" marker-end="url(#hd-arrow)"/>
+
+<rect x="80" y="210" width="240" height="62" rx="16" fill="#FAF3E8" stroke="#1A2A3A" stroke-width="3"/>
+<text x="200" y="247" text-anchor="middle" font-size="19" font-weight="700" fill="#1A2A3A" font-family="sans-serif">Parse + chunk</text>
+
+<line x1="200" y1="272" x2="200" y2="344" stroke="#000000" stroke-width="2" marker-end="url(#hd-arrow)"/>
+
+<rect x="80" y="348" width="240" height="62" rx="16" fill="#FAF3E8" stroke="#1A2A3A" stroke-width="3"/>
+<text x="200" y="385" text-anchor="middle" font-size="19" font-weight="700" fill="#1A2A3A" font-family="sans-serif">Voyage AI embed</text>
+
+<line x1="200" y1="410" x2="200" y2="482" stroke="#000000" stroke-width="2" marker-end="url(#hd-arrow)"/>
+
+<rect x="80" y="486" width="240" height="62" rx="16" fill="#3D5A78" stroke="#1A2A3A" stroke-width="3"/>
+<text x="200" y="523" text-anchor="middle" font-size="19" font-weight="700" fill="#FAF3E8" font-family="sans-serif">Vector store</text>
+
+<rect x="80" y="690" width="240" height="68" rx="16" fill="#FAF3E8" stroke="#1A2A3A" stroke-width="3"/>
+<text x="200" y="718" text-anchor="middle" font-size="19" font-weight="700" fill="#1A2A3A" font-family="sans-serif">Chat UI</text>
+<text x="200" y="744" text-anchor="middle" font-size="16" fill="#1A2A3A" font-family="sans-serif">renders answer</text>
+
+<!-- Question path -->
+<rect x="1020" y="60" width="260" height="74" rx="16" fill="#8FB3DA" stroke="#1A2A3A" stroke-width="3"/>
+<text x="1150" y="90" text-anchor="middle" font-size="20" font-weight="700" fill="#1A2A3A" font-family="sans-serif">User asks a</text>
+<text x="1150" y="118" text-anchor="middle" font-size="20" font-weight="700" fill="#1A2A3A" font-family="sans-serif">question</text>
+
+<line x1="1150" y1="134" x2="1150" y2="206" stroke="#000000" stroke-width="2" marker-end="url(#hd-arrow)"/>
+
+<rect x="950" y="210" width="400" height="78" rx="18" fill="#FAF3E8" stroke="#1A2A3A" stroke-width="3"/>
+<text x="1150" y="258" text-anchor="middle" font-size="21" font-weight="700" fill="#1A2A3A" font-family="sans-serif">Coordinator agent</text>
+
+<line x1="1150" y1="288" x2="1150" y2="346" stroke="#000000" stroke-width="2" marker-end="url(#hd-arrow)"/>
+
+<rect x="1040" y="350" width="220" height="68" rx="16" fill="#3D5A78" stroke="#1A2A3A" stroke-width="3"/>
+<text x="1150" y="392" text-anchor="middle" font-size="22" font-weight="700" fill="#FAF3E8" font-family="sans-serif">Claude (LLM)</text>
+
+<line x1="1080" y1="418" x2="900" y2="492" stroke="#000000" stroke-width="2" marker-end="url(#hd-arrow)"/>
+<line x1="1220" y1="418" x2="1230" y2="492" stroke="#000000" stroke-width="2" marker-end="url(#hd-arrow)"/>
+
+<rect x="700" y="496" width="320" height="90" rx="16" fill="#F0D9A8" stroke="#1A2A3A" stroke-width="3"/>
+<text x="860" y="528" text-anchor="middle" font-size="20" font-weight="700" fill="#1A2A3A" font-family="sans-serif">search_documents</text>
+<text x="860" y="554" text-anchor="middle" font-size="16" fill="#1A2A3A" font-family="sans-serif">Searches chunks using cosine similarity</text>
+<text x="860" y="576" text-anchor="middle" font-size="14" fill="#1A2A3A" font-family="sans-serif">Deterministic — no LLM call</text>
+
+<rect x="1060" y="496" width="300" height="90" rx="16" fill="#F0D9A8" stroke="#1A2A3A" stroke-width="3"/>
+<text x="1210" y="528" text-anchor="middle" font-size="20" font-weight="700" fill="#1A2A3A" font-family="sans-serif">extract_data</text>
+<text x="1210" y="554" text-anchor="middle" font-size="16" fill="#1A2A3A" font-family="sans-serif">Pulls structured fields from text</text>
+<text x="1210" y="576" text-anchor="middle" font-size="14" fill="#1A2A3A" font-family="sans-serif">It's also a subagent — own LLM call</text>
+
+<path d="M1290 496 C 1330 440, 1300 400, 1264 368" fill="none" stroke="#000000" stroke-width="1.8" stroke-dasharray="2 7" marker-end="url(#hd-arrow)"/>
+
+<line x1="700" y1="538" x2="322" y2="510" stroke="#000000" stroke-width="1.8" stroke-dasharray="3 8" marker-end="url(#hd-arrow)"/>
+<text x="500" y="485" text-anchor="middle" font-size="16" fill="#1A2A3A" font-family="sans-serif">retrieves</text>
+
+<line x1="860" y1="586" x2="960" y2="650" stroke="#000000" stroke-width="2" marker-end="url(#hd-arrow)"/>
+<line x1="1210" y1="586" x2="1140" y2="650" stroke="#000000" stroke-width="2" marker-end="url(#hd-arrow)"/>
+
+<rect x="930" y="654" width="440" height="76" rx="18" fill="#FAF3E8" stroke="#1A2A3A" stroke-width="3"/>
+<text x="1150" y="686" text-anchor="middle" font-size="20" font-weight="700" fill="#1A2A3A" font-family="sans-serif">Loop up to 5 rounds</text>
+<text x="1150" y="714" text-anchor="middle" font-size="16" fill="#1A2A3A" font-family="sans-serif">until final answer</text>
+
+<line x1="1150" y1="730" x2="1150" y2="760" stroke="#000000" stroke-width="2" marker-end="url(#hd-arrow)"/>
+
+<rect x="1000" y="764" width="300" height="80" rx="18" fill="#8FB3DA" stroke="#1A2A3A" stroke-width="3"/>
+<text x="1150" y="798" text-anchor="middle" font-size="20" font-weight="700" fill="#1A2A3A" font-family="sans-serif">Answer + sources</text>
+<text x="1150" y="826" text-anchor="middle" font-size="16" fill="#1A2A3A" font-family="sans-serif">SOURCES: file.pdf</text>
+
+<path d="M1000 800 C 600 800, 380 760, 320 724" fill="none" stroke="#000000" stroke-width="2" marker-end="url(#hd-arrow)"/>
+</svg>

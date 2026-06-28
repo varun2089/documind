@@ -1,3 +1,7 @@
+import path from "path";
+import dotenv from "dotenv";
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+
 import { parseDocument } from "../ingestion/parseDocument";
 import { chunkText } from "../ingestion/chunkText";
 import { generateEmbeddings } from "../ingestion/generateEmbedding";
