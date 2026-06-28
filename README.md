@@ -14,7 +14,7 @@ Upload PDFs or Word documents, ask questions in plain English, and get cited ans
 
 ## Architecture
 
-![Documind architecture](./docs/architecture.svg)
+![Documind architecture](./docs/documind_architecture.svg)
 
 A coordinator agent routes each question to the right tool — semantic search for general questions, structured JSON extraction for specific data — looping through multiple rounds when needed and citing exactly which documents it used.
 
