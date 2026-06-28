@@ -22,10 +22,18 @@ export const searchDocumentsToolDefinition = {
   },
 };
 
+export type SearchResultWithSource = SearchResult & { source: string };
+
+function extractSource(id: string): string {
+  const name = id.split(":chunk-")[0];
+  return name.split("/").pop() || name;
+}
+
 export async function executeSearchDocuments(
   store: VectorEntry[],
   input: { query: string; top_k?: number }
-): Promise<SearchResult[]> {
+): Promise<SearchResultWithSource[]> {
   const queryEmbedding = await generateEmbedding(input.query);
-  return searchStore(store, queryEmbedding, input.top_k ?? 5);
+  const results = searchStore(store, queryEmbedding, input.top_k ?? 5);
+  return results.map((r) => ({ ...r, source: extractSource(r.id) }));
 }

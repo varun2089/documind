@@ -1,10 +1,24 @@
-import { FileText, Plus } from "lucide-react";
+import React, { useRef } from "react";
+import { FileText, Plus, Loader2 } from "lucide-react";
 
 type SidebarProps = {
   documents: string[];
+  pendingFiles: string[];
+  isUploading: boolean;
+  onAddDocuments: (files: FileList) => void;
 };
 
-const Sidebar = ({ documents }: SidebarProps) => {
+const Sidebar = ({ documents, pendingFiles, isUploading, onAddDocuments }: SidebarProps) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      onAddDocuments(files);
+    }
+    e.target.value = "";
+  };
+
   return (
     <aside className="w-[260px] bg-sidebar flex flex-col shrink-0">
       <div className="px-4 py-4">
@@ -22,15 +36,42 @@ const Sidebar = ({ documents }: SidebarProps) => {
             </div>
           </li>
         ))}
+        {pendingFiles.map((name) => (
+          <li key={`pending-${name}`}>
+            <div className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-slate-500 opacity-60">
+              <Loader2 className="w-4 h-4 shrink-0 animate-spin" />
+              <span className="truncate">{name}</span>
+            </div>
+          </li>
+        ))}
       </ul>
 
       <div className="p-3">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".pdf,.docx"
+          multiple
+          onChange={handleFileChange}
+          className="hidden"
+        />
         <button
           type="button"
-          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-white bg-accent hover:bg-accent-hover transition-colors cursor-pointer"
+          disabled={isUploading}
+          onClick={() => fileInputRef.current?.click()}
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-white bg-accent hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
-          <Plus className="w-4 h-4" />
-          Add document
+          {isUploading ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Uploading...
+            </>
+          ) : (
+            <>
+              <Plus className="w-4 h-4" />
+              Add document
+            </>
+          )}
         </button>
       </div>
     </aside>

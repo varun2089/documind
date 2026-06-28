@@ -1,7 +1,10 @@
-import "dotenv/config";
 import Anthropic from "@anthropic-ai/sdk";
 
-const client = new Anthropic();
+let client: Anthropic;
+function getClient() {
+  if (!client) client = new Anthropic();
+  return client;
+}
 
 export const extractDataToolDefinition = {
   name: "extract_data",
@@ -28,7 +31,7 @@ export async function executeExtractData(input: {
   text: string;
   schema: object;
 }): Promise<object> {
-  const response = await client.messages.create({
+  const response = await getClient().messages.create({
     model: "claude-sonnet-4-6",
     max_tokens: 1024,
     system:

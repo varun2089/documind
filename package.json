@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "description": "AI-powered multi-agent document intelligence assistant using Claude API, RAG, and agentic orchestration",
+  "scripts": {
+    "dev:api": "npm run dev --prefix api",
+    "dev:frontend": "npm run dev --prefix frontend"
+  },
   "workspaces": ["api", "frontend"],
   "repository": {
     "type": "git",
